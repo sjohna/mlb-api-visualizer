@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
+import { MlbApiDataService } from '../services/mlb-api-data.service';
+
 @Component({
   selector: 'app-days-games',
   templateUrl: './days-games.component.html',
@@ -11,17 +13,17 @@ import { catchError, retry } from 'rxjs/operators';
 })
 export class DaysGamesComponent implements OnInit {
 
-  daysGamesData: any;
-  lastDataLoadTime?: Date;
+  constructor(private dataService: MlbApiDataService) { }
 
-  constructor(private http: HttpClient) { }
+  get daysGamesData(): any {
+    return this.dataService.games;
+  }
+
+  get lastDataLoadTime(): Date | undefined {
+    return this.dataService.lastDataLoadTime;
+  }
 
   ngOnInit(): void {
-    this.http.get("http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1")
-      .subscribe((data: any) => 
-        {
-          this.daysGamesData = data.dates[0];
-          this.lastDataLoadTime = new Date();
-        });
+    this.dataService.queryGames();
   }
 }
