@@ -2,35 +2,33 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LocalDate, LocalDateTime } from '@js-joda/core'
 
+type GameData = { queryTime: LocalDateTime, games: any };
+
 @Injectable({
   providedIn: 'root'
 })
 export class MlbApiDataService {
 
-  games: any;
-  lastDataLoadTime?: LocalDateTime;
-  currentDay: LocalDate;
+  gamesCache: {[property: string]: GameData } = { };
 
   constructor(private http: HttpClient) {
-    this.currentDay = LocalDate.now();
-    this.queryGames();
    }
 
-  async queryGames(): Promise<void> {
-    const queryString = `http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=${this.currentDay.toString()}&endDate=${this.currentDay.toString()}`;
+  async queryGamesForDate(date: LocalDate): Promise<void> {
+    const queryString = `http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=${date.toString()}&endDate=${date.toString()}`;
     console.log(queryString);
     const games: any = await this.http.get(queryString).toPromise();
-    this.games = games.dates[0];
-    this.lastDataLoadTime = LocalDateTime.now();
+    this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: games.dates[0] };
   }
 
-  previousDay(): void {
-    this.currentDay = this.currentDay.minusDays(1);
-    this.queryGames();
+  gamesForDate(date: LocalDate): GameData | undefined {
+    return this.gamesCache[date.toString()];
   }
 
-  nextDay(): void {
-    this.currentDay = this.currentDay.plusDays(1);
-    this.queryGames();
+  ensureDateInCache(date: LocalDate): void {
+    if (!this.gamesCache.hasOwnProperty(date.toString()))
+    {
+      this.queryGamesForDate(date);
+    }
   }
 }

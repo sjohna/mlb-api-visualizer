@@ -6,7 +6,7 @@ import { catchError, retry } from 'rxjs/operators';
 
 import { MlbApiDataService } from '../services/mlb-api-data.service';
 
-import { LocalDateTime } from '@js-joda/core';
+import { LocalDate, LocalDateTime } from '@js-joda/core';
 
 @Component({
   selector: 'app-days-games',
@@ -15,25 +15,33 @@ import { LocalDateTime } from '@js-joda/core';
 })
 export class DaysGamesComponent implements OnInit {
 
-  constructor(private dataService: MlbApiDataService) { }
+  gamesDate: LocalDate;
+
+  constructor(private dataService: MlbApiDataService) {
+    this.gamesDate = LocalDate.now();
+  }
 
   get daysGamesData(): any {
-    return this.dataService.games;
+    return this.dataService.gamesForDate(this.gamesDate)?.games;
   }
 
   get lastDataLoadTime(): LocalDateTime | undefined {
-    return this.dataService.lastDataLoadTime;
+    return this.dataService.gamesForDate(this.gamesDate)?.queryTime;
   }
 
   ngOnInit(): void {
-    this.dataService.queryGames();
+    this.dataService.ensureDateInCache(this.gamesDate);
   }
 
   nextDay(): void {
-    this.dataService.nextDay();
+    console.log("Next day");
+    this.gamesDate = this.gamesDate.plusDays(1);
+    this.dataService.ensureDateInCache(this.gamesDate);
   }
 
   previousDay(): void {
-    this.dataService.previousDay();
+    console.log("Previous day");
+    this.gamesDate = this.gamesDate.minusDays(1);
+    this.dataService.ensureDateInCache(this.gamesDate);
   }
 }
