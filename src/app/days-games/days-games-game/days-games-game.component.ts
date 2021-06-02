@@ -14,4 +14,13 @@ export class DaysGamesGamesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  get gameStateString(): string {
+    switch(this.game.status.statusCode) {
+      case 'S':
+        return this.game.gameDate;
+      default:
+        return this.game.status.detailedState;
+    }
+  }
+
 }

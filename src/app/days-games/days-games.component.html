@@ -4,10 +4,11 @@
     class="container-lg bg-dark text-white" 
     *ngIf="daysGamesData">
     <div class="row">
-        <div class="col-10">
+        <div class="col-2"><span class="float-left"><button class="btn btn-primary" (click)="previousDay()">Previous Day</button></span></div>
+        <div class="col-8">
             Data loaded: {{daysGamesData.games.length}} for games for {{daysGamesData.date}}, loaded at {{lastDataLoadTime?.toLocaleString()}}
         </div>
-        <div class="col-2"><span class="float-right"><button class="btn btn-primary">Reload</button></span></div>
+        <div class="col-2"><span class="float-right"><button class="btn btn-primary" (click)="nextDay()">Next Day</button></span></div>
     </div>
 </div>
 
