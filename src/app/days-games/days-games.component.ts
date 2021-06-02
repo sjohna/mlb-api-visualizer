@@ -24,5 +24,4 @@ export class DaysGamesComponent implements OnInit {
           this.lastDataLoadTime = new Date();
         });
   }
-
 }

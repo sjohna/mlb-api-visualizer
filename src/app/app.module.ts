@@ -4,11 +4,13 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { DaysGamesComponent } from './days-games/days-games.component';
+import { DaysGamesGamesComponent } from './days-games/days-games-game/days-games-game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DaysGamesComponent
+    DaysGamesComponent,
+    DaysGamesGamesComponent
   ],
   imports: [
     BrowserModule,
