@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LocalDate, LocalDateTime } from '@js-joda/core'
+import { MlbApiDataServiceEvent } from './mlb-api-data-service-event';
 
 type GameData = { queryTime: LocalDateTime, games: any };
 
@@ -9,6 +10,8 @@ type GameData = { queryTime: LocalDateTime, games: any };
 })
 export class MlbApiDataService {
 
+  events: MlbApiDataServiceEvent[] = [];
+
   gamesCache: {[property: string]: GameData } = { };
 
   constructor(private http: HttpClient) {
@@ -16,9 +19,22 @@ export class MlbApiDataService {
 
   async queryGamesForDate(date: LocalDate): Promise<void> {
     const queryString = `http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=${date.toString()}&endDate=${date.toString()}`;
-    console.log(queryString);
-    const games: any = await this.http.get(queryString).toPromise();
-    this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: games.dates[0] };
+
+    let event = new MlbApiDataServiceEvent(`GET ${queryString}`);
+
+    this.events.unshift(event);
+
+    try {
+      event.startTime = LocalDateTime.now();
+      const games: any = await this.http.get(queryString).toPromise();
+      this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: games.dates[0] };
+    }
+    catch {
+      event.errorString = 'GET failed!';
+      event.status = 'Failed';
+    }
+
+    event.finishTime = LocalDateTime.now();
   }
 
   gamesForDate(date: LocalDate): GameData | undefined {
