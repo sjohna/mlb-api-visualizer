@@ -1,19 +1,21 @@
 <div class="container border">
     <div class="row">
-        <div class="col-7">
+        <div class="col-8">
             <div class="row" [class.winningTeamRow]="awayTeamWon">
-                <span [class.winningTeamName]="awayTeamWon">{{game.teams.away.team.name}}</span>
+                <div class="col-10">
+                    <span>{{game.teams.away.team.name}}</span>
+                </div>
+                <div class="col-2">
+                    <span *ngIf="scoreAvailable">{{game.live.liveData.linescore.teams.away.runs}}</span>
+                </div>
             </div>
-            <div class="row" [class.winningTeamRow]="homeTeamWon">
-                <span [class.winningTeamName]="homeTeamWon">{{game.teams.home.team.name}}</span>
-            </div>
-        </div>
-        <div class="col-1">
-            <div class="row">
-                <span *ngIf="scoreAvailable">{{game.live.liveData.linescore.teams.away.runs}}</span>
-            </div>
-            <div class="row">
-                <span *ngIf="scoreAvailable">{{game.live.liveData.linescore.teams.home.runs}}</span>
+            <div class="row"  [class.winningTeamRow]="homeTeamWon">
+                <div class="col-10">
+                    <span>{{game.teams.home.team.name}}</span>
+                </div>
+                <div class="col-2">
+                    <span *ngIf="scoreAvailable">{{game.live.liveData.linescore.teams.home.runs}}</span>
+                </div>
             </div>
         </div>
         <div class="col-4">
