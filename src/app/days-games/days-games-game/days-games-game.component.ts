@@ -27,15 +27,31 @@ export class DaysGamesGamesComponent implements OnInit {
     return !!this.game.live && !!this.game.liveQueryTime;
   }
 
+  get gameOver() {
+    return this.game.status.statusCode == 'F' || this.game.status.statuscode == 'FR';
+  }
+
+  get gameInProgress() {
+    return this.game.status.statusCode == 'I';
+  }
+
   get scoreAvailable() {
     const available = this.liveAvailable 
-      && (this.game.status.statusCode == 'F' || this.game.status.statusCode == 'I' || this.game.status.statusCode == 'FR')
+      && (this.gameOver || this.gameInProgress) 
       && !!this.game.live.liveData
       && !!this.game.live.liveData.linescore
       && !!this.game.live.liveData.linescore.teams;
 
     console.log(`Score available: ${available}`);
     return available;  
+  }
+
+  get homeTeamWon() {
+    return this.liveAvailable && this.gameOver && this.game.live.liveData.linescore.teams.home.runs > this.game.live.liveData.linescore.teams.away.runs;
+  }
+
+  get awayTeamWon() {
+    return this.liveAvailable && this.gameOver && this.game.live.liveData.linescore.teams.home.runs < this.game.live.liveData.linescore.teams.away.runs;
   }
 
 }

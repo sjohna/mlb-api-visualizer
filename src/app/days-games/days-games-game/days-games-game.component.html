@@ -1,8 +1,12 @@
 <div class="container border">
     <div class="row">
         <div class="col-7">
-            <div class="row">{{game.teams.away.team.name}}</div>
-            <div class="row">{{game.teams.home.team.name}}</div>
+            <div class="row" [class.winningTeamRow]="awayTeamWon">
+                <span [class.winningTeamName]="awayTeamWon">{{game.teams.away.team.name}}</span>
+            </div>
+            <div class="row" [class.winningTeamRow]="homeTeamWon">
+                <span [class.winningTeamName]="homeTeamWon">{{game.teams.home.team.name}}</span>
+            </div>
         </div>
         <div class="col-1">
             <div class="row">
