@@ -23,35 +23,53 @@ export class DaysGamesGamesComponent implements OnInit {
     }
   }
 
+  // helpers for getting game data
+  get gameStatusCode(): string {
+    return this.game.status.statusCode;
+  }
+
+  get homeTeamRuns(): number {
+    return this.game.live.liveData.linescore.teams.home.runs;
+  }
+
+  get awayTeamRuns(): number {
+    return this.game.live.liveData.linescore.teams.away.runs;
+  }
+
+  get homeTeamName(): string {
+    return this.game.teams.home.team.name;
+  }
+
+  get awayTeamName(): string {
+    return this.game.teams.away.team.name;
+  }
+
   get liveAvailable() {
     return !!this.game.live && !!this.game.liveQueryTime;
   }
 
   get gameOver() {
-    return this.game.status.statusCode == 'F' || this.game.status.statuscode == 'FR';
+    return this.gameStatusCode === 'F' || this.gameStatusCode === 'FR';
   }
 
   get gameInProgress() {
-    return this.game.status.statusCode == 'I';
+    return this.gameStatusCode === 'I';
   }
 
   get scoreAvailable() {
-    const available = this.liveAvailable 
+    return this.liveAvailable 
       && (this.gameOver || this.gameInProgress) 
       && !!this.game.live.liveData
       && !!this.game.live.liveData.linescore
-      && !!this.game.live.liveData.linescore.teams;
-
-    console.log(`Score available: ${available}`);
-    return available;  
+      && !!this.game.live.liveData.linescore.teams; 
   }
 
   get homeTeamWon() {
-    return this.liveAvailable && this.gameOver && this.game.live.liveData.linescore.teams.home.runs > this.game.live.liveData.linescore.teams.away.runs;
+    return this.liveAvailable && this.gameOver && this.homeTeamRuns > this.awayTeamRuns;
   }
 
   get awayTeamWon() {
-    return this.liveAvailable && this.gameOver && this.game.live.liveData.linescore.teams.home.runs < this.game.live.liveData.linescore.teams.away.runs;
+    return this.liveAvailable && this.gameOver && this.awayTeamRuns > this.homeTeamRuns;
   }
 
 }

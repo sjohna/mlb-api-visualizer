@@ -3,18 +3,18 @@
         <div class="col-8">
             <div class="row" [class.winningTeamRow]="awayTeamWon">
                 <div class="col-10">
-                    <span>{{game.teams.away.team.name}}</span>
+                    <span>{{awayTeamName}}</span>
                 </div>
                 <div class="col-2">
-                    <span *ngIf="scoreAvailable">{{game.live.liveData.linescore.teams.away.runs}}</span>
+                    <span *ngIf="scoreAvailable">{{awayTeamRuns}}</span>
                 </div>
             </div>
             <div class="row"  [class.winningTeamRow]="homeTeamWon">
                 <div class="col-10">
-                    <span>{{game.teams.home.team.name}}</span>
+                    <span>{{homeTeamName}}</span>
                 </div>
                 <div class="col-2">
-                    <span *ngIf="scoreAvailable">{{game.live.liveData.linescore.teams.home.runs}}</span>
+                    <span *ngIf="scoreAvailable">{{homeTeamRuns}}</span>
                 </div>
             </div>
         </div>
