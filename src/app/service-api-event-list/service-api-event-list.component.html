@@ -1,5 +1,10 @@
 <div class="container">
     <div class="row" *ngFor="let e of dataServiceEvents">
-        {{e.description}}
+        <div class="col-2">
+            {{e.status}}
+        </div>
+        <div class="col-10">
+            {{e.description}}
+        </div>
     </div>
 </div>

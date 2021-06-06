@@ -25,9 +25,11 @@ export class MlbApiDataService {
     this.events.unshift(event);
 
     try {
+      event.status = 'In Progress';
       event.startTime = LocalDateTime.now();
       const games: any = await this.http.get(queryString).toPromise();
       this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: games.dates[0] };
+      event.status = 'Finished';
     }
     catch {
       event.errorString = 'GET failed!';
