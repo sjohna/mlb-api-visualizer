@@ -27,9 +27,14 @@ export class MlbApiDataService {
     try {
       event.status = 'In Progress';
       event.startTime = LocalDateTime.now();
-      const games: any = await this.http.get(queryString).toPromise();
-      this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: games.dates[0] };
+      const data: any = await this.http.get(queryString).toPromise();
+      this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: data.dates[0] };
       event.status = 'Finished';
+
+      for (const game of data.dates[0].games) {
+        this.queryLiveDataForGame(game);
+      }
+
     }
     catch {
       event.errorString = 'GET failed!';
@@ -37,6 +42,29 @@ export class MlbApiDataService {
     }
 
     event.finishTime = LocalDateTime.now();
+  }
+
+  async queryLiveDataForGame(game: any): Promise<void> {
+    const queryString = `http://statsapi.mlb.com${game.link}`;
+
+    let event = new MlbApiDataServiceEvent(`GET ${queryString}`);
+
+    this.events.unshift(event);
+
+    try {
+      event.status = 'In Progress';
+      event.startTime = LocalDateTime.now();
+      const data: any = await this.http.get(queryString).toPromise();
+      game.live = data;
+      game.liveQueryTime = LocalDateTime.now();
+      event.status = 'Finished';
+    }
+    catch {
+      event.errorString = 'GET failed!';
+      event.status = 'Failed';
+    }
+
+    event.finishTime = LocalDateTime.now();    
   }
 
   gamesForDate(date: LocalDate): GameData | undefined {

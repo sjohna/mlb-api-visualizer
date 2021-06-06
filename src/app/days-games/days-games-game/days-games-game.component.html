@@ -1,8 +1,16 @@
 <div class="container border">
     <div class="row">
-        <div class="col-8">
+        <div class="col-7">
             <div class="row">{{game.teams.away.team.name}}</div>
             <div class="row">{{game.teams.home.team.name}}</div>
+        </div>
+        <div class="col-1">
+            <div class="row">
+                <span *ngIf="scoreAvailable">{{game.live.liveData.linescore.teams.away.runs}}</span>
+            </div>
+            <div class="row">
+                <span *ngIf="scoreAvailable">{{game.live.liveData.linescore.teams.home.runs}}</span>
+            </div>
         </div>
         <div class="col-4">
             {{game.status.detailedState}} <span *ngIf="game.status.reason">({{game.status.reason}})</span>

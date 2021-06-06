@@ -23,4 +23,19 @@ export class DaysGamesGamesComponent implements OnInit {
     }
   }
 
+  get liveAvailable() {
+    return !!this.game.live && !!this.game.liveQueryTime;
+  }
+
+  get scoreAvailable() {
+    const available = this.liveAvailable 
+      && (this.game.status.statusCode == 'F' || this.game.status.statusCode == 'I')
+      && !!this.game.live.liveData
+      && !!this.game.live.liveData.linescore
+      && !!this.game.live.liveData.linescore.teams;
+
+    console.log(`Score available: ${available}`);
+    return available;  
+  }
+
 }
