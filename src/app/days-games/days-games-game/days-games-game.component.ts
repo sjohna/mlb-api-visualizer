@@ -29,7 +29,7 @@ export class DaysGamesGamesComponent implements OnInit {
 
   get scoreAvailable() {
     const available = this.liveAvailable 
-      && (this.game.status.statusCode == 'F' || this.game.status.statusCode == 'I')
+      && (this.game.status.statusCode == 'F' || this.game.status.statusCode == 'I' || this.game.status.statusCode == 'FR')
       && !!this.game.live.liveData
       && !!this.game.live.liveData.linescore
       && !!this.game.live.liveData.linescore.teams;
