@@ -1,16 +1,15 @@
-<div *ngIf="!daysGamesData">Data loading...</div>
-
 <div 
-    class="container-lg bg-dark text-white" 
-    *ngIf="daysGamesData">
-    <div class="row">
-        <div class="col-1 float-left"><span class="float-left"><button class="btn btn-primary" (click)="previousDay()"><i class="bi bi-chevron-compact-left"></i></button></span></div>
-        <div class="col-10">
+    class="container-lg bg-dark text-white">
+    <div class="d-flex justify-content-between">
+        <div><span class="float-left"><button class="btn btn-primary" (click)="previousDay()"><i class="bi bi-chevron-compact-left"></i></button></span></div>
+        <div>
             Data loaded: {{daysGamesData.games.length}} for games for {{daysGamesData.date}}, loaded at {{lastDataLoadTime?.toLocaleString()}}
         </div>
-        <div class="col-1 float-right"><span class="float-right"><button class="btn btn-primary" (click)="nextDay()"><i class="bi bi-chevron-compact-right"></i></button></span></div>
+        <div><span class="float-right"><button class="btn btn-primary" (click)="nextDay()"><i class="bi bi-chevron-compact-right"></i></button></span></div>
     </div>
 </div>
+
+<div *ngIf="!daysGamesData">Data loading...</div>
 
 <div class="container" *ngIf="daysGamesData">
     <div class="row row-cols-2">
