@@ -1,0 +1,5 @@
+.serviceEventsContainer {
+  height: 100%;
+  overflow-y: scroll;
+  background: lightblue;
+}
