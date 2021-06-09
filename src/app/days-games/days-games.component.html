@@ -13,7 +13,7 @@
 
 <div class="container" *ngIf="daysGamesData">
     <div class="row row-cols-2">
-        <div class="col" *ngFor="let game of daysGamesData.games">
+        <div class="col p-1" *ngFor="let game of daysGamesData.games">
             <app-days-games-game [game]="game"></app-days-games-game>
         </div>
     </div>
