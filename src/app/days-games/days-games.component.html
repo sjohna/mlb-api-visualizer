@@ -12,7 +12,7 @@
 <div *ngIf="!daysGamesData">Data loading...</div>
 
 <div class="container" *ngIf="daysGamesData">
-    <div class="row row-cols-2">
+    <div class="row row-cols-2 pt-1">
         <div class="col p-1" *ngFor="let game of daysGamesData.games">
             <app-days-games-game [game]="game"></app-days-games-game>
         </div>
