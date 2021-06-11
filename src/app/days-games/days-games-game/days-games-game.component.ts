@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { LocalDateTime, ZonedDateTime, ZoneId, DateTimeFormatter, convert } from '@js-joda/core';
+
 @Component({
   selector: 'app-days-games-game',
   templateUrl: './days-games-game.component.html',
@@ -17,9 +19,9 @@ export class DaysGamesGamesComponent implements OnInit {
   get gameStateString(): string {
     switch(this.game.status.statusCode) {
       case 'S':
-        return this.game.gameDate;
+        return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric'}).format(convert(ZonedDateTime.parse(this.game.gameDate).withZoneSameInstant(ZoneId.SYSTEM)).toDate());
       default:
-        return this.game.status.detailedState;
+        return `${this.game.status.detailedState}${(this.game.status.reason ? ' (' + this.game.status.reason + ')' : '')}`;
     }
   }
 
