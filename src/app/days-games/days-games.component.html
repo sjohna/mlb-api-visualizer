@@ -1,9 +1,9 @@
 <div 
     class="container-lg bg-dark text-white">
     <div class="d-flex justify-content-between">
-        <div><button class="btn btn-primary" (click)="previousDay()"><i class="pi pi-caret-left"></i></button></div>
+        <button class="btn btn-primary" (click)="previousDay()"><i class="pi pi-caret-left"></i></button>
         <div>
-            {{daysGamesData.games.length}} for games for {{daysGamesData.date}}
+            <h4>{{daysGamesData.games.length}} for games for {{daysGamesData.date}}</h4>
         </div>
         <div>
             <button 
