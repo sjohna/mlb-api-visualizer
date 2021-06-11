@@ -34,14 +34,16 @@ export class DaysGamesComponent implements OnInit {
   }
 
   nextDay(): void {
-    console.log("Next day");
     this.gamesDate = this.gamesDate.plusDays(1);
     this.dataService.ensureDateInCache(this.gamesDate);
   }
 
   previousDay(): void {
-    console.log("Previous day");
     this.gamesDate = this.gamesDate.minusDays(1);
     this.dataService.ensureDateInCache(this.gamesDate);
+  }
+
+  reload(): void {
+    this.dataService.queryGamesForDate(this.gamesDate);
   }
 }

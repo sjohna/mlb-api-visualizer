@@ -7,6 +7,8 @@ import { DaysGamesComponent } from './days-games/days-games.component';
 import { DaysGamesGamesComponent } from './days-games/days-games-game/days-games-game.component';
 import { ServiceApiEventListComponent } from './service-api-event-list/service-api-event-list.component';
 
+import { TooltipModule } from 'primeng/tooltip';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +18,8 @@ import { ServiceApiEventListComponent } from './service-api-event-list/service-a
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    TooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]
