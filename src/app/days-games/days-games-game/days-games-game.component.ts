@@ -20,6 +20,13 @@ export class DaysGamesGamesComponent implements OnInit {
     switch(this.game.status.statusCode) {
       case 'S':
         return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric'}).format(convert(ZonedDateTime.parse(this.game.gameDate).withZoneSameInstant(ZoneId.SYSTEM)).toDate());
+      case 'I':
+      case 'M':
+        if(this.liveAvailable) {
+          return `${this.game.live.liveData.linescore.inningHalf} ${this.game.live.liveData.linescore.currentInningOrdinal}`;
+        } else {
+          return '';
+        }
       default:
         return `${this.game.status.detailedState}${(this.game.status.reason ? ' (' + this.game.status.reason + ')' : '')}`;
     }
