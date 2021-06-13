@@ -20,7 +20,7 @@ export class MlbApiDataService {
   async queryGamesForDate(date: LocalDate): Promise<void> {
     const queryString = `http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=${date.toString()}&endDate=${date.toString()}`;
 
-    let event = new MlbApiDataServiceEvent(`GET ${queryString}`);
+    let event = new MlbApiDataServiceEvent('GET', queryString);
 
     this.events.unshift(event);
 
@@ -47,7 +47,7 @@ export class MlbApiDataService {
   async queryLiveDataForGame(game: any): Promise<void> {
     const queryString = `http://statsapi.mlb.com${game.link}`;
 
-    let event = new MlbApiDataServiceEvent(`GET ${queryString}`);
+    let event = new MlbApiDataServiceEvent('GET', queryString);
 
     this.events.unshift(event);
 

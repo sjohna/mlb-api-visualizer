@@ -1,9 +1,7 @@
 <div class="container-fluid" style="height: 100%;">
-    <div class="row" style="height: 100%;">
-        <div class="col-4" style="height: 100%;">
-            <app-service-api-event-list></app-service-api-event-list>
-        </div>
-        <div class="col-8">
+    <div class="d-flex" style="height: 100%;">
+        <app-service-api-event-list [expanded]="false"></app-service-api-event-list>
+        <div class="flex-fill">
             <app-days-games></app-days-games>
         </div>
     </div>

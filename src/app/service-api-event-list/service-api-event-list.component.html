@@ -1,11 +1,17 @@
-<div class="serviceEventsContainer">
-    <div class="container">
+<div class="serviceEventsContainer d-flex">
+    <div>
+        <button (click)="expanded = !expanded" class="btn btn-primary">
+            <i *ngIf="!expanded" class="pi pi-caret-right"></i>
+            <i *ngIf="expanded" class="pi pi-caret-left"></i>
+        </button>
+    </div>
+    <div *ngIf="expanded" class="container flex-fill">
         <div class="row" *ngFor="let e of dataServiceEvents">
             <div class="col-2">
                 {{e.status}}
             </div>
             <div class="col-10">
-                {{e.description}}
+                {{e.method}} <a href="{{e.url}}" target="_blank">{{e.url}}</a>
             </div>
         </div>
     </div>

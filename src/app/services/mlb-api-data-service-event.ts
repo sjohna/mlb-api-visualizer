@@ -10,8 +10,12 @@ export class MlbApiDataServiceEvent {
 
     errorString?: string;
 
-    constructor(public description: string) {
+    constructor(public method: string, public url: string) {
         this.createTime = LocalDateTime.now();
         this.status = 'Not Started';
+    }
+
+    get description() {
+        return `${this.method} ${this.url}`;
     }
 }
