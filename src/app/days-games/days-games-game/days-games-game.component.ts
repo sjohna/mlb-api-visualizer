@@ -19,6 +19,7 @@ export class DaysGamesGamesComponent implements OnInit {
   get gameStateString(): string {
     switch(this.game.status.statusCode) {
       case 'S':
+      case 'P':
         return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric'}).format(convert(ZonedDateTime.parse(this.game.gameDate).withZoneSameInstant(ZoneId.SYSTEM)).toDate());
       case 'I':
       case 'M':
