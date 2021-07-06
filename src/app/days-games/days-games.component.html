@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between">
         <button class="btn btn-primary" (click)="previousDay()"><i class="pi pi-caret-left"></i></button>
         <div>
-            <h4>{{daysGamesData?.games.length}} games for {{daysGamesData?.date}}</h4>
+            <h4>{{daysGamesData ? daysGamesData?.games.length : 'loading'}} games for {{gamesDate}}</h4>
         </div>
         <div>
             <button 
@@ -20,8 +20,6 @@
         </div>
     </div>
 </div>
-
-<div *ngIf="!daysGamesData">Data loading...</div>
 
 <div class="container" *ngIf="daysGamesData">
     <div class="row row-cols-2 pt-1">
