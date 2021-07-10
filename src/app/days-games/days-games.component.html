@@ -1,9 +1,9 @@
 <div 
     class="container-lg bg-dark text-white">
-    <div class="d-flex justify-content-between">
+    <div class="navbar">
         <button class="btn btn-primary" (click)="previousDay()"><i class="pi pi-caret-left"></i></button>
         <div>
-            <h4>{{daysGamesData ? daysGamesData?.games.length : 'loading'}} games for {{gamesDate}}</h4>
+            <h4>{{daysGamesData ? daysGamesData?.games.length : 'loading'}} games for {{gamesDate | dayOfWeek | titlecase}}, {{gamesDate}}</h4>
         </div>
         <div>
             <button 

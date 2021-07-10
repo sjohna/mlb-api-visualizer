@@ -8,13 +8,15 @@ import { DaysGamesGamesComponent } from './days-games/days-games-game/days-games
 import { ServiceApiEventListComponent } from './service-api-event-list/service-api-event-list.component';
 
 import { TooltipModule } from 'primeng/tooltip';
+import { DayOfWeekPipe } from './pipes/day-of-week.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     DaysGamesComponent,
     DaysGamesGamesComponent,
-    ServiceApiEventListComponent
+    ServiceApiEventListComponent,
+    DayOfWeekPipe
   ],
   imports: [
     BrowserModule,
