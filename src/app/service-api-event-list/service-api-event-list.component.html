@@ -5,7 +5,7 @@
             <i *ngIf="expanded" class="pi pi-caret-left"></i>
         </button>
     </div>
-    <div *ngIf="expanded" class="container flex-fill">
+    <div *ngIf="expanded" class="container flex-fill" [@slideInOut]>
         <div class="row" *ngFor="let e of dataServiceEvents">
             <div class="col-2">
                 {{e.status}}
