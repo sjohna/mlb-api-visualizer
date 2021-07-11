@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { LocalDateTime, ZonedDateTime, ZoneId, DateTimeFormatter, convert } from '@js-joda/core';
+import { ZonedDateTime, ZoneId, convert } from '@js-joda/core';
 import { MlbApiDataService } from 'src/app/services/mlb-api-data.service';
-import { GameDetails } from 'src/app/types/game-details';
+import { DaysGameDetails } from 'src/app/types/days-game-details';
+import { Live } from 'src/app/types/live';
 
 @Component({
   selector: 'app-days-games-game',
@@ -11,7 +12,7 @@ import { GameDetails } from 'src/app/types/game-details';
 })
 export class DaysGamesGamesComponent implements OnInit {
 
-  @Input() game: GameDetails;
+  @Input() game: DaysGameDetails;
 
   constructor(private dataService: MlbApiDataService) {
     // this shuts up the TS error about game not being assigned in the constructor
@@ -27,13 +28,13 @@ export class DaysGamesGamesComponent implements OnInit {
 
   get gameStateString(): string {
     switch(this.game.status?.statusCode) {
-      case 'S':
-      case 'P':
+      case 'S': // scheduled
+      case 'P': // pre-game
         return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric'}).format(convert(ZonedDateTime.parse(this.game.gameDate).withZoneSameInstant(ZoneId.SYSTEM)).toDate());
-      case 'I':
-      case 'M':
+      case 'I': // in-progress
+      case 'M': // manager challenge
         if(this.liveAvailable) {
-          return `${this.live.liveData.linescore.inningHalf} ${this.live.liveData.linescore.currentInningOrdinal}`;
+          return `${this.live.inningHalf} ${this.live.currentInningOrdinal}`;
         } else {
           return '';
         }
@@ -48,11 +49,11 @@ export class DaysGamesGamesComponent implements OnInit {
   }
 
   get homeTeamRuns(): number {
-    return this.live.liveData.linescore.teams.home.runs;
+    return this.live.homeTeamRuns as number;
   }
 
   get awayTeamRuns(): number {
-    return this.live.liveData.linescore.teams.away.runs;
+    return this.live.awayTeamRuns as number;
   }
 
   get homeTeamName(): string {
@@ -68,23 +69,23 @@ export class DaysGamesGamesComponent implements OnInit {
   }
 
   get gameOver() {
-    return this.gameStatusCode === 'F' || this.gameStatusCode === 'FR';
+    return this.gameStatusCode === 'F' || this.gameStatusCode === 'FR' || this.gameStatusCode === 'O';
   }
 
   get gameInProgress() {
-    return this.gameStatusCode === 'I';
+    return this.gameStatusCode === 'I' || this.gameStatusCode === 'M';
   }
 
-  private get live(): any {
-    return this.dataService.liveForGame(this.game.gameId)?.live;
+  private get live(): Live {
+    // TODO: get rid of this type assertion...
+    return this.dataService.liveForGame(this.game.gameId)?.live as Live;
   }
 
   get scoreAvailable() {
     return this.liveAvailable 
       && (this.gameOver || this.gameInProgress) 
-      && !!this.live.liveData
-      && !!this.live.liveData.linescore
-      && !!this.live.liveData.linescore.teams; 
+      && this.live.awayTeamRuns !== undefined
+      && this.live.homeTeamRuns !== undefined;
   }
 
   get homeTeamWon() {

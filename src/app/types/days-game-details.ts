@@ -1,4 +1,4 @@
-export class GameDetails {
+export class DaysGameDetails {
   readonly status: {
     readonly statusCode: string;
     readonly detailedState: string;
@@ -9,8 +9,6 @@ export class GameDetails {
 
   readonly awayTeamName: string;
   readonly homeTeamName: string;
-
-  readonly link: string;
 
   readonly gameId: number;
 
@@ -26,8 +24,6 @@ export class GameDetails {
 
     this.homeTeamName = gameData.teams.home.team.name;
     this.awayTeamName = gameData.teams.away.team.name;
-
-    this.link = gameData.link;
 
     this.gameId = gameData.gamePk;
   }
