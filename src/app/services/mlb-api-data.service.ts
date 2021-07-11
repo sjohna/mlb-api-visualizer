@@ -15,56 +15,45 @@ export class MlbApiDataService {
   gamesCache: {[property: string]: GameData } = { };
 
   constructor(private http: HttpClient) {
-   }
+  }
 
-  async queryGamesForDate(date: LocalDate): Promise<void> {
-    const queryString = `http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=${date.toString()}&endDate=${date.toString()}`;
-
-    let event = new MlbApiDataServiceEvent('GET', queryString);
-
-    this.events.unshift(event);
-
+  private async queryAPI(queryUri: string): Promise<any> {
+    let event = new MlbApiDataServiceEvent('GET', queryUri);
     try {
       event.status = 'In Progress';
       event.startTime = LocalDateTime.now();
-      const data: any = await this.http.get(queryString).toPromise();
-      this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: data.dates[0] };
+      this.events.unshift(event);
+
+      const data: any = await this.http.get(queryUri).toPromise();
+
       event.status = 'Finished';
 
-      for (const game of data.dates[0].games) {
-        this.queryLiveDataForGame(game);
-      }
-
+      return data;
     }
     catch {
       event.errorString = 'GET failed!';
       event.status = 'Failed';
+    } finally {
+      event.finishTime = LocalDateTime.now();
     }
+  } 
 
-    event.finishTime = LocalDateTime.now();
+  async queryGamesForDate(date: LocalDate): Promise<void> {
+    const queryUri = `http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=${date.toString()}&endDate=${date.toString()}`;
+    const data = await this.queryAPI(queryUri);
+
+    this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: data.dates[0] };
+
+    for (const game of data.dates[0].games) {
+      this.queryLiveDataForGame(game);
+    }
   }
 
   async queryLiveDataForGame(game: any): Promise<void> {
-    const queryString = `http://statsapi.mlb.com${game.link}`;
-
-    let event = new MlbApiDataServiceEvent('GET', queryString);
-
-    this.events.unshift(event);
-
-    try {
-      event.status = 'In Progress';
-      event.startTime = LocalDateTime.now();
-      const data: any = await this.http.get(queryString).toPromise();
-      game.live = data;
-      game.liveQueryTime = LocalDateTime.now();
-      event.status = 'Finished';
-    }
-    catch {
-      event.errorString = 'GET failed!';
-      event.status = 'Failed';
-    }
-
-    event.finishTime = LocalDateTime.now();    
+    const queryUri = `http://statsapi.mlb.com${game.link}`;
+    const data = await this.queryAPI(queryUri);
+    game.live = data;
+    game.liveQueryTime = LocalDateTime.now();
   }
 
   gamesForDate(date: LocalDate): GameData | undefined {
