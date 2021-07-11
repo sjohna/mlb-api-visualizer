@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LocalDate, LocalDateTime } from '@js-joda/core'
 import { MlbApiDataServiceEvent } from './mlb-api-data-service-event';
+import { DaysGames } from '../types/days-games';
 
-type GameData = { queryTime: LocalDateTime, games: any };
+type GameData = { queryTime: LocalDateTime, games: DaysGames };
 
 @Injectable({
   providedIn: 'root'
@@ -42,9 +43,10 @@ export class MlbApiDataService {
     const queryUri = `http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=${date.toString()}&endDate=${date.toString()}`;
     const data = await this.queryAPI(queryUri);
 
-    this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: data.dates[0] };
+    const daysGames = new DaysGames(data?.dates?.[0])
+    this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: daysGames };
 
-    for (const game of data.dates[0].games) {
+    for (const game of daysGames.games) {
       this.queryLiveDataForGame(game);
     }
   }
