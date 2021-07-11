@@ -1,11 +1,13 @@
+import { GameDetails } from "./game-details";
+
 export class DaysGames {
-  games: any[];
+  games: GameDetails[] = [];
 
   constructor(gamesData: any = undefined) {
     if (gamesData && gamesData.games && gamesData.games.length) {
-      this.games = gamesData.games;
-    } else {
-      this.games = [];
-    }
+      for (let game of gamesData.games) {
+        this.games.push(new GameDetails(game));
+      }
+    } 
   }
 }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { LocalDateTime, ZonedDateTime, ZoneId, DateTimeFormatter, convert } from '@js-joda/core';
+import { GameDetails } from 'src/app/types/game-details';
 
 @Component({
   selector: 'app-days-games-game',
@@ -9,15 +10,20 @@ import { LocalDateTime, ZonedDateTime, ZoneId, DateTimeFormatter, convert } from
 })
 export class DaysGamesGamesComponent implements OnInit {
 
-  @Input() game: any;
+  @Input() game: GameDetails;
 
-  constructor() { }
+  constructor() {
+    // this shuts up the TS error about game not being assigned in the constructor
+    this.game = undefined as any;
+  }
 
   ngOnInit(): void {
+    // TODO: throw error if game is not defined
+    // See https://stackoverflow.com/questions/35528395/make-directive-input-required
   }
 
   get gameStateString(): string {
-    switch(this.game.status.statusCode) {
+    switch(this.game.status?.statusCode) {
       case 'S':
       case 'P':
         return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric'}).format(convert(ZonedDateTime.parse(this.game.gameDate).withZoneSameInstant(ZoneId.SYSTEM)).toDate());
@@ -35,7 +41,7 @@ export class DaysGamesGamesComponent implements OnInit {
 
   // helpers for getting game data
   get gameStatusCode(): string {
-    return this.game.status.statusCode;
+    return this.game.status.statusCode || '';
   }
 
   get homeTeamRuns(): number {
@@ -47,11 +53,11 @@ export class DaysGamesGamesComponent implements OnInit {
   }
 
   get homeTeamName(): string {
-    return this.game.teams.home.team.name;
+    return this.game.homeTeamName;
   }
 
   get awayTeamName(): string {
-    return this.game.teams.away.team.name;
+    return this.game.awayTeamName;
   }
 
   get liveAvailable() {
