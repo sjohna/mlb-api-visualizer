@@ -3,8 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { LocalDate, LocalDateTime } from '@js-joda/core'
 import { MlbApiDataServiceEvent } from './mlb-api-data-service-event';
 import { DaysGames } from '../types/days-games';
+import { GameDetails } from '../types/game-details';
 
 type GameData = { queryTime: LocalDateTime, games: DaysGames };
+type LiveData = { queryTime: LocalDateTime, live: any };
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,8 @@ export class MlbApiDataService {
 
   events: MlbApiDataServiceEvent[] = [];
 
-  gamesCache: {[property: string]: GameData } = { };
+  daysGamesCache: Record<string, GameData> = { };
+  gameLiveDataCache: Record<number, LiveData> = { };
 
   constructor(private http: HttpClient) {
   }
@@ -44,28 +47,34 @@ export class MlbApiDataService {
     const data = await this.queryAPI(queryUri);
 
     const daysGames = new DaysGames(data?.dates?.[0])
-    this.gamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: daysGames };
-
-    for (const game of daysGames.games) {
-      this.queryLiveDataForGame(game);
-    }
+    this.daysGamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: daysGames };
   }
 
-  async queryLiveDataForGame(game: any): Promise<void> {
-    const queryUri = `http://statsapi.mlb.com${game.link}`;
+  async queryLiveForGame(gameId: number): Promise<void> {
+    const queryUri = `http://statsapi.mlb.com/api/v1.1/game/${gameId}/feed/live`;
     const data = await this.queryAPI(queryUri);
-    game.live = data;
-    game.liveQueryTime = LocalDateTime.now();
+    this.gameLiveDataCache[gameId] = { queryTime: LocalDateTime.now(), live: data };
   }
 
   gamesForDate(date: LocalDate): GameData | undefined {
-    return this.gamesCache[date.toString()];
+    return this.daysGamesCache[date.toString()];
   }
 
   ensureDateInCache(date: LocalDate): void {
-    if (!this.gamesCache.hasOwnProperty(date.toString()))
+    if (!this.daysGamesCache.hasOwnProperty(date.toString()))
     {
       this.queryGamesForDate(date);
+    }
+  }
+
+  liveForGame(gameId: number): LiveData | undefined {
+    return this.gameLiveDataCache[gameId];
+  }
+
+  ensureLiveInCache(gameId: number): void {
+    if (!this.gameLiveDataCache.hasOwnProperty(gameId))
+    {
+      this.queryLiveForGame(gameId);
     }
   }
 }

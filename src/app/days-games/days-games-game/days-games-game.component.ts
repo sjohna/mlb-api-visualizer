@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { LocalDateTime, ZonedDateTime, ZoneId, DateTimeFormatter, convert } from '@js-joda/core';
+import { MlbApiDataService } from 'src/app/services/mlb-api-data.service';
 import { GameDetails } from 'src/app/types/game-details';
 
 @Component({
@@ -12,7 +13,7 @@ export class DaysGamesGamesComponent implements OnInit {
 
   @Input() game: GameDetails;
 
-  constructor() {
+  constructor(private dataService: MlbApiDataService) {
     // this shuts up the TS error about game not being assigned in the constructor
     this.game = undefined as any;
   }
@@ -20,6 +21,8 @@ export class DaysGamesGamesComponent implements OnInit {
   ngOnInit(): void {
     // TODO: throw error if game is not defined
     // See https://stackoverflow.com/questions/35528395/make-directive-input-required
+    
+    this.dataService.ensureLiveInCache(this.game.gameId);
   }
 
   get gameStateString(): string {
@@ -30,7 +33,7 @@ export class DaysGamesGamesComponent implements OnInit {
       case 'I':
       case 'M':
         if(this.liveAvailable) {
-          return `${this.game.live.liveData.linescore.inningHalf} ${this.game.live.liveData.linescore.currentInningOrdinal}`;
+          return `${this.live.liveData.linescore.inningHalf} ${this.live.liveData.linescore.currentInningOrdinal}`;
         } else {
           return '';
         }
@@ -45,11 +48,11 @@ export class DaysGamesGamesComponent implements OnInit {
   }
 
   get homeTeamRuns(): number {
-    return this.game.live.liveData.linescore.teams.home.runs;
+    return this.live.liveData.linescore.teams.home.runs;
   }
 
   get awayTeamRuns(): number {
-    return this.game.live.liveData.linescore.teams.away.runs;
+    return this.live.liveData.linescore.teams.away.runs;
   }
 
   get homeTeamName(): string {
@@ -61,7 +64,7 @@ export class DaysGamesGamesComponent implements OnInit {
   }
 
   get liveAvailable() {
-    return !!this.game.live && !!this.game.liveQueryTime;
+    return !!this.dataService.liveForGame(this.game.gameId);
   }
 
   get gameOver() {
@@ -72,12 +75,16 @@ export class DaysGamesGamesComponent implements OnInit {
     return this.gameStatusCode === 'I';
   }
 
+  private get live(): any {
+    return this.dataService.liveForGame(this.game.gameId)?.live;
+  }
+
   get scoreAvailable() {
     return this.liveAvailable 
       && (this.gameOver || this.gameInProgress) 
-      && !!this.game.live.liveData
-      && !!this.game.live.liveData.linescore
-      && !!this.game.live.liveData.linescore.teams; 
+      && !!this.live.liveData
+      && !!this.live.liveData.linescore
+      && !!this.live.liveData.linescore.teams; 
   }
 
   get homeTeamWon() {

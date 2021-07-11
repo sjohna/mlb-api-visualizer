@@ -12,8 +12,7 @@ export class GameDetails {
 
   readonly link: string;
 
-  live: any;
-  liveQueryTime: any;
+  readonly gameId: number;
 
   constructor(gameData: any) {
     // TODO throw exceptions if data is malformed...
@@ -29,5 +28,7 @@ export class GameDetails {
     this.awayTeamName = gameData.teams.away.team.name;
 
     this.link = gameData.link;
+
+    this.gameId = gameData.gamePk;
   }
 }
