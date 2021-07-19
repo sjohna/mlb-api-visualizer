@@ -4,6 +4,8 @@ import { LocalDate, LocalDateTime } from '@js-joda/core'
 import { MlbApiDataServiceEvent } from './mlb-api-data-service-event';
 import { DaysGames } from '../types/days-games';
 import { Live } from '../types/live';
+import { Team } from '../types/team';
+import { Division } from '../types/division';
 
 type GameData = { queryTime: LocalDateTime, games: DaysGames };
 type LiveData = { queryTime: LocalDateTime, live: Live };
@@ -17,8 +19,40 @@ export class MlbApiDataService {
 
   daysGamesCache: Record<string, GameData> = { };
   gameLiveDataCache: Record<number, LiveData> = { };
+  teamsCache: Record<number, Team> = { };
+  divisionCache: Record<number, Division> = { };
+
+  initialized: boolean = false;
 
   constructor(private http: HttpClient) {
+    this.makeInitialQueries();
+  }
+
+  private async makeInitialQueries() {
+    await this.queryTeams();
+    await this.queryDivisions();
+  }
+
+  private async queryTeams(): Promise<void> {
+    const queryUri = 'http://statsapi.mlb.com/api/v1/teams?sportId=1';
+    const teamData = await this.queryAPI(queryUri);
+
+    for (let team of teamData?.teams) {
+      const teamObj = new Team(team);
+
+      this.teamsCache[teamObj.teamId] = teamObj;
+    }
+  }
+
+  private async queryDivisions(): Promise<void> {
+    const queryUri = 'http://statsapi.mlb.com/api/v1/divisions?sportId=1';
+    const divisionData = await this.queryAPI(queryUri);
+
+    for (let division of divisionData?.teams) {
+      const divisionObj = new Division(division);
+
+      this.divisionCache[divisionObj.divisionId] = divisionObj;
+    }
   }
 
   private async queryAPI(queryUri: string): Promise<any> {
