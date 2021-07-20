@@ -22,7 +22,7 @@ export class DaysGamesComponent implements OnInit {
   }
 
   get daysGamesData(): any {
-    return this.dataService.gamesForDate(this.gamesDate)?.games;
+    return this.dataService.gamesForDate(this.gamesDate)?.data;
   }
 
   get lastDataLoadTime(): LocalDateTime | undefined {
@@ -30,17 +30,17 @@ export class DaysGamesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.ensureDateInCache(this.gamesDate);
+    this.dataService.ensureGamesForDateInCache(this.gamesDate);
   }
 
   nextDay(): void {
     this.gamesDate = this.gamesDate.plusDays(1);
-    this.dataService.ensureDateInCache(this.gamesDate);
+    this.dataService.ensureGamesForDateInCache(this.gamesDate);
   }
 
   previousDay(): void {
     this.gamesDate = this.gamesDate.minusDays(1);
-    this.dataService.ensureDateInCache(this.gamesDate);
+    this.dataService.ensureGamesForDateInCache(this.gamesDate);
   }
 
   reload(): void {

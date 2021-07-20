@@ -78,7 +78,7 @@ export class DaysGamesGamesComponent implements OnInit {
 
   private get live(): Live {
     // TODO: get rid of this type assertion...
-    return this.dataService.liveForGame(this.game.gameId)?.live as Live;
+    return this.dataService.liveForGame(this.game.gameId)?.data as Live;
   }
 
   get scoreAvailable() {

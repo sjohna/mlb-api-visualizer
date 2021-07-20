@@ -6,9 +6,9 @@ import { DaysGames } from '../types/days-games';
 import { Live } from '../types/live';
 import { Team } from '../types/team';
 import { Division } from '../types/division';
+import { StandingsOnDate } from '../types/standings';
 
-type GameData = { queryTime: LocalDateTime, games: DaysGames };
-type LiveData = { queryTime: LocalDateTime, live: Live };
+type QueryTimeStamped<T> = { queryTime: LocalDateTime, data: T };
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,11 @@ export class MlbApiDataService {
 
   events: MlbApiDataServiceEvent[] = [];
 
-  daysGamesCache: Record<string, GameData> = { };
-  gameLiveDataCache: Record<number, LiveData> = { };
+  daysGamesCache: Record<string, QueryTimeStamped<DaysGames>> = { };
+  gameLiveDataCache: Record<number, QueryTimeStamped<Live>> = { };
   teamsCache: Record<number, Team> = { };
   divisionCache: Record<number, Division> = { };
+  standingsCache: Record<string, QueryTimeStamped<StandingsOnDate>> = { };
 
   initialized: boolean = false;
 
@@ -48,7 +49,7 @@ export class MlbApiDataService {
     const queryUri = 'http://statsapi.mlb.com/api/v1/divisions?sportId=1';
     const divisionData = await this.queryAPI(queryUri);
 
-    for (let division of divisionData?.teams) {
+    for (let division of divisionData?.divisions) {
       const divisionObj = new Division(division);
 
       this.divisionCache[divisionObj.divisionId] = divisionObj;
@@ -81,27 +82,47 @@ export class MlbApiDataService {
     const data = await this.queryAPI(queryUri);
 
     const daysGames = new DaysGames(data?.dates?.[0])
-    this.daysGamesCache[date.toString()] = { queryTime: LocalDateTime.now(), games: daysGames };
+    this.daysGamesCache[date.toString()] = { queryTime: LocalDateTime.now(), data: daysGames };
+  }
+
+  async queryStandingsForDate(date: LocalDate): Promise<void> {
+    const alQueryUri = `http://statsapi.mlb.com/api/v1/standings?leagueId=103&standingsType=regularSeason&season=${date.year()}&date=${date.toString()}`;
+    const nlQueryUri = `http://statsapi.mlb.com/api/v1/standings?leagueId=104&standingsType=regularSeason&season=${date.year()}&date=${date.toString()}`;
+    const alData = await this.queryAPI(alQueryUri);
+    const nlData = await this.queryAPI(nlQueryUri);
+
+    this.standingsCache[date.toString()] = { queryTime: LocalDateTime.now(), data: new StandingsOnDate(date, alData, nlData) };
   }
 
   async queryLiveForGame(gameId: number): Promise<void> {
     const queryUri = `http://statsapi.mlb.com/api/v1.1/game/${gameId}/feed/live`;
     const data = await this.queryAPI(queryUri);
-    this.gameLiveDataCache[gameId] = { queryTime: LocalDateTime.now(), live: new Live(data) };
+    this.gameLiveDataCache[gameId] = { queryTime: LocalDateTime.now(), data: new Live(data) };
   }
 
-  gamesForDate(date: LocalDate): GameData | undefined {
+  gamesForDate(date: LocalDate): QueryTimeStamped<DaysGames> | undefined {
     return this.daysGamesCache[date.toString()];
   }
 
-  ensureDateInCache(date: LocalDate): void {
+  standingsForDate(date: LocalDate): QueryTimeStamped<StandingsOnDate> | undefined {
+    return this.standingsCache[date.toString()];
+  }
+
+  ensureGamesForDateInCache(date: LocalDate): void {
     if (!this.daysGamesCache.hasOwnProperty(date.toString()))
     {
       this.queryGamesForDate(date);
     }
   }
 
-  liveForGame(gameId: number): LiveData | undefined {
+  ensureStandingsForDateInCache(date: LocalDate): void {
+    if (!this.standingsCache.hasOwnProperty(date.toString()))
+    {
+      this.queryStandingsForDate(date);
+    }
+  }
+
+  liveForGame(gameId: number): QueryTimeStamped<Live> | undefined {
     return this.gameLiveDataCache[gameId];
   }
 

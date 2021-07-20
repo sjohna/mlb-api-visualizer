@@ -10,6 +10,7 @@ import { ServiceApiEventListComponent } from './service-api-event-list/service-a
 
 import { TooltipModule } from 'primeng/tooltip';
 import { DayOfWeekPipe } from './pipes/day-of-week.pipe';
+import { DaysStandingsComponent } from './days-standings/days-standings.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { DayOfWeekPipe } from './pipes/day-of-week.pipe';
     DaysGamesComponent,
     DaysGamesGamesComponent,
     ServiceApiEventListComponent,
-    DayOfWeekPipe
+    DayOfWeekPipe,
+    DaysStandingsComponent
   ],
   imports: [
     BrowserModule,
