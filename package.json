@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build-container": "npm run build && docker build -t sjohna/mlb-api-visualizer:latest -f docker/Dockerfile ."
   },
   "private": true,
   "dependencies": {
