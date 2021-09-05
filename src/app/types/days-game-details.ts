@@ -10,6 +10,11 @@ export class DaysGameDetails {
   readonly awayTeamName: string;
   readonly homeTeamName: string;
 
+  readonly score?: {
+    home: number;
+    away: number;
+  }
+
   readonly gameId: number;
 
   constructor(gameData: any) {
@@ -26,5 +31,9 @@ export class DaysGameDetails {
     this.awayTeamName = gameData.teams.away.team.name;
 
     this.gameId = gameData.gamePk;
+
+    if (gameData?.teams?.home?.score !== undefined && gameData?.teams?.away?.score !== undefined) {
+      this.score = { home: gameData.teams.home.score, away: gameData.teams.away.score};
+    }
   }
 }

@@ -23,7 +23,9 @@ export class DaysGamesGamesComponent implements OnInit {
     // TODO: throw error if game is not defined
     // See https://stackoverflow.com/questions/35528395/make-directive-input-required
     
-    this.dataService.ensureLiveInCache(this.game.gameId);
+    if (this.gameInProgress) {
+      this.dataService.ensureLiveInCache(this.game.gameId);
+    }
   }
 
   get gameStateString(): string {
@@ -49,11 +51,11 @@ export class DaysGamesGamesComponent implements OnInit {
   }
 
   get homeTeamRuns(): number {
-    return this.live.homeTeamRuns as number;
+    return this.game.score?.home as number;
   }
 
   get awayTeamRuns(): number {
-    return this.live.awayTeamRuns as number;
+    return this.game.score?.away as number;
   }
 
   get homeTeamName(): string {
@@ -82,18 +84,16 @@ export class DaysGamesGamesComponent implements OnInit {
   }
 
   get scoreAvailable() {
-    return this.liveAvailable 
-      && (this.gameOver || this.gameInProgress) 
-      && this.live.awayTeamRuns !== undefined
-      && this.live.homeTeamRuns !== undefined;
+    return (this.gameOver || this.gameInProgress) 
+      && this.game.score !== undefined;
   }
 
   get homeTeamWon() {
-    return this.liveAvailable && this.gameOver && this.homeTeamRuns > this.awayTeamRuns;
+    return this.gameOver && this.homeTeamRuns > this.awayTeamRuns;
   }
 
   get awayTeamWon() {
-    return this.liveAvailable && this.gameOver && this.awayTeamRuns > this.homeTeamRuns;
+    return this.gameOver && this.awayTeamRuns > this.homeTeamRuns;
   }
 
 }
