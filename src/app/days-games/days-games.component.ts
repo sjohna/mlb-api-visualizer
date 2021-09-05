@@ -50,4 +50,9 @@ export class DaysGamesComponent implements OnInit {
   reload(): void {
     this.dataService.queryGamesForDate(this.gamesDate);
   }
+
+  setDate(date: LocalDate) {
+    this.gamesDate = date;
+    this.dataService.ensureGamesForDateInCache(this.gamesDate);
+  }
 }

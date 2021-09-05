@@ -19,5 +19,7 @@
     </div>
     <div class="gameState">
         {{gameStateString}}
+        <i class="pi pi-calendar-minus icon-link" pTooltip="Rescheduled for {{rescheduledToDate}}" *ngIf="rescheduledToDate" (click)="changeDate(rescheduledToDate)"></i>
+        <i class="pi pi-calendar-plus icon-link" pTooltip="Rescheduled from {{rescheduledFromDate}}" *ngIf="rescheduledFromDate" (click)="changeDate(rescheduledFromDate)"></i>
     </div>
 </div>

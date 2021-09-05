@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { ZonedDateTime, ZoneId, convert } from '@js-joda/core';
+import { ZonedDateTime, ZoneId, convert, LocalDate } from '@js-joda/core';
 import { MlbApiDataService } from 'src/app/services/mlb-api-data.service';
 import { DaysGameDetails } from 'src/app/types/days-game-details';
 import { Live } from 'src/app/types/live';
@@ -13,6 +13,7 @@ import { Live } from 'src/app/types/live';
 export class DaysGamesGamesComponent implements OnInit {
 
   @Input() game: DaysGameDetails;
+  @Output() dateChanged = new EventEmitter<LocalDate>();
 
   constructor(private dataService: MlbApiDataService) {
     // this shuts up the TS error about game not being assigned in the constructor
@@ -94,6 +95,18 @@ export class DaysGamesGamesComponent implements OnInit {
 
   get awayTeamWon() {
     return this.gameOver && this.awayTeamRuns > this.homeTeamRuns;
+  }
+
+  get rescheduledFromDate(): LocalDate | undefined {
+    return this.game?.rescheduledFromDate;
+  }
+
+  get rescheduledToDate(): LocalDate | undefined {
+    return this.game?.rescheduledToDate;
+  }
+
+  changeDate(date: LocalDate) {
+    this.dateChanged.emit(date);
   }
 
 }

@@ -1,3 +1,5 @@
+import { LocalDate } from "@js-joda/core";
+
 export class DaysGameDetails {
   readonly status: {
     readonly statusCode: string;
@@ -17,6 +19,9 @@ export class DaysGameDetails {
 
   readonly gameId: number;
 
+  readonly rescheduledFromDate?: LocalDate;
+  readonly rescheduledToDate?: LocalDate;
+
   constructor(gameData: any) {
     // TODO throw exceptions if data is malformed...
     this.gameDate = gameData.gameDate;
@@ -34,6 +39,14 @@ export class DaysGameDetails {
 
     if (gameData?.teams?.home?.score !== undefined && gameData?.teams?.away?.score !== undefined) {
       this.score = { home: gameData.teams.home.score, away: gameData.teams.away.score};
+    }
+
+    if (gameData.rescheduledFromDate) {
+      this.rescheduledFromDate = LocalDate.parse(gameData.rescheduledFromDate);
+    }
+
+    if (gameData.rescheduleGameDate) {
+      this.rescheduledToDate = LocalDate.parse(gameData.rescheduleGameDate);
     }
   }
 }
