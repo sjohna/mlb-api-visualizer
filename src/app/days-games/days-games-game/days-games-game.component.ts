@@ -71,7 +71,7 @@ export class DaysGamesGamesComponent implements OnInit {
   }
 
   get gameOver() {
-    return this.gameStatusCode === 'F' || this.gameStatusCode === 'FR' || this.gameStatusCode === 'O';
+    return this.gameStatusCode === 'F' || this.gameStatusCode === 'FR' || this.gameStatusCode === 'O' || this.gameStatusCode == 'FT';
   }
 
   get gameInProgress() {
