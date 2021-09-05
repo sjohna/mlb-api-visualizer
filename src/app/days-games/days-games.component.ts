@@ -17,6 +17,10 @@ export class DaysGamesComponent implements OnInit {
 
   gamesDate: LocalDate;
 
+  get dataServiceInitialized() : boolean {
+    return this.dataService.initialized;
+  } 
+
   constructor(private dataService: MlbApiDataService) {
     this.gamesDate = LocalDate.now();
   }
@@ -30,7 +34,7 @@ export class DaysGamesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.ensureGamesForDateInCache(this.gamesDate);
+    //this.dataService.ensureGamesForDateInCache(this.gamesDate);
   }
 
   nextDay(): void {

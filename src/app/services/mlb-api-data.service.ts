@@ -32,6 +32,8 @@ export class MlbApiDataService {
   private async makeInitialQueries() {
     await this.queryTeams();
     await this.queryDivisions();
+    await this.queryGamesForYear(LocalDate.now().year());
+    this.initialized = true;
   }
 
   private async queryTeams(): Promise<void> {
@@ -83,6 +85,19 @@ export class MlbApiDataService {
 
     const daysGames = new DaysGames(data?.dates?.[0])
     this.daysGamesCache[date.toString()] = { queryTime: LocalDateTime.now(), data: daysGames };
+  }
+
+  async queryGamesForYear(year: number): Promise<void> {
+    const startDate = LocalDate.of(year, 1, 1);
+    const endDate = LocalDate.of(year, 12, 31);
+    const queryUri = `http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=${startDate.toString()}&endDate=${endDate.toString()}`;
+    const data = await this.queryAPI(queryUri);
+    const queryTime = LocalDateTime.now();
+
+    for (const date of data?.dates) {
+      const daysGames = new DaysGames(date);
+      this.daysGamesCache[daysGames.date.toString()] = { queryTime: queryTime, data: daysGames };
+    }
   }
 
   async queryStandingsForDate(date: LocalDate): Promise<void> {

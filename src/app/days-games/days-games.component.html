@@ -3,7 +3,7 @@
     <div class="navbar">
         <button class="btn btn-primary" (click)="previousDay()"><i class="pi pi-caret-left"></i></button>
         <div>
-            <h4>{{daysGamesData ? daysGamesData?.games.length : 'loading'}} games for {{gamesDate | dayOfWeek | titlecase}}, {{gamesDate}}</h4>
+            <h4>{{dataServiceInitialized ? (daysGamesData ? daysGamesData?.games.length : 'no') : 'loading'}} games for {{gamesDate | dayOfWeek | titlecase}}, {{gamesDate}}</h4>
         </div>
         <div>
             <button 
