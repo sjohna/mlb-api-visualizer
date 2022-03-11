@@ -11,6 +11,8 @@ import { ServiceApiEventListComponent } from './service-api-event-list/service-a
 import { TooltipModule } from 'primeng/tooltip';
 import { DayOfWeekPipe } from './pipes/day-of-week.pipe';
 import { DaysStandingsComponent } from './days-standings/days-standings.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { DaysStandingsComponent } from './days-standings/days-standings.componen
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    TooltipModule
+    TooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

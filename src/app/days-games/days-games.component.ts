@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-
-import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { MlbApiDataService } from '../services/mlb-api-data.service';
 
-import { LocalDate, LocalDateTime } from '@js-joda/core';
+import { LocalDate, LocalDateTime, nativeJs } from '@js-joda/core';
+import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-days-games',
@@ -14,6 +11,7 @@ import { LocalDate, LocalDateTime } from '@js-joda/core';
   styleUrls: ['./days-games.component.css']
 })
 export class DaysGamesComponent implements OnInit {
+  @ViewChild('picker') gamesDatePicker: MatDatepicker<Date> | undefined;
 
   gamesDate: LocalDate;
 
@@ -54,5 +52,17 @@ export class DaysGamesComponent implements OnInit {
   setDate(date: LocalDate) {
     this.gamesDate = date;
     this.dataService.ensureGamesForDateInCache(this.gamesDate);
+  }
+
+  selectDate() {
+    this.gamesDatePicker!.open();
+  }
+
+  setDateFromPicker(date: MatDatepickerInputEvent<Date>) {
+    if (date.value) {
+      let jodaDate = LocalDate.from(nativeJs(date.value));
+      this.setDate(jodaDate);      
+    }
+
   }
 }

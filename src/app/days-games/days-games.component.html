@@ -8,12 +8,18 @@
         <div>
             <button 
             class="btn btn-primary mx-1" 
+            (click)="selectDate()"
+            pTooltip="Select Date">
+                <i class="pi pi-calendar"></i>
+            </button>
+            <button 
+            class="btn btn-primary mx-1" 
             (click)="reload()"
             pTooltip="{{lastDataLoadTime?.toLocaleString()}}">
                 <i class="pi pi-refresh"></i>
             </button>
             <button 
-            class="btn btn-primary" 
+            class="btn btn-primary mx-1" 
             (click)="nextDay()">
                 <i class="pi pi-caret-right"></i>
             </button>
@@ -28,3 +34,6 @@
         </div>
     </div>
 </div>
+
+<input type="hidden" class="hidden" [matDatepicker]="picker" (dateChange)="setDateFromPicker($event)">
+<mat-datepicker [touchUi]="true" #picker></mat-datepicker> <!-- eventually make this a custom picker -->

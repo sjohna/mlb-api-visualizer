@@ -2,7 +2,7 @@
     <div class="scoreBoard">
         <div class="gameRow" [class.winningTeamRow]="awayTeamWon">
             <div>
-                <span class="underline">{{awayTeamName}}</span>
+                <span>{{awayTeamName}}</span>
             </div>
             <div class="score flex-align-right">
                 <span *ngIf="scoreAvailable">{{awayTeamRuns}}</span>
