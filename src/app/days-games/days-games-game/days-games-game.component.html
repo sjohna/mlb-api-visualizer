@@ -1,25 +1,25 @@
-<div class="game">
-    <div class="scoreBoard">
-        <div class="gameRow" [class.winningTeamRow]="awayTeamWon">
+<div class="flex border-2 border-gray-200 px-3">
+    <div class="w-2/3">
+        <div class="flex flex-row px-3" [class.bg-green-400]="awayTeamWon" [class.font-bold]="awayTeamWon">
             <div>
                 <span>{{awayTeamName}}</span>
             </div>
-            <div class="score flex-align-right">
+            <div class="ml-auto">
                 <span *ngIf="scoreAvailable">{{awayTeamRuns}}</span>
             </div>
         </div>
-        <div class="gameRow"  [class.winningTeamRow]="homeTeamWon">
+        <div class="flex flex-row px-3" [class.bg-green-400]="homeTeamWon" [class.font-bold]="homeTeamWon">
             <div>
                 <span>{{homeTeamName}}</span>
             </div>
-            <div class="flex-align-right">
+            <div class="ml-auto">
                 <span *ngIf="scoreAvailable">{{homeTeamRuns}}</span>
             </div>
         </div>
     </div>
-    <div class="gameState">
+    <div class="w-1/3 px-3">
         {{gameStateString}}
-        <i class="pi pi-calendar-minus icon-link" pTooltip="Rescheduled for {{rescheduledToDate}}" *ngIf="rescheduledToDate" (click)="changeDate(rescheduledToDate)"></i>
-        <i class="pi pi-calendar-plus icon-link" pTooltip="Rescheduled from {{rescheduledFromDate}}" *ngIf="rescheduledFromDate" (click)="changeDate(rescheduledFromDate)"></i>
+        <i class="pi pi-calendar-minus cursor-pointer" pTooltip="Rescheduled from {{rescheduledFromDate}}" *ngIf="rescheduledFromDate" (click)="changeDate(rescheduledFromDate)"></i>
+        <i class="pi pi-calendar-plus cursor-pointer" pTooltip="Rescheduled for {{rescheduledToDate}}" *ngIf="rescheduledToDate" (click)="changeDate(rescheduledToDate)"></i>
     </div>
 </div>

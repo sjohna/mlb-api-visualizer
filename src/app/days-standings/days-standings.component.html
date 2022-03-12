@@ -1,24 +1,22 @@
 <div 
-    class="container-lg bg-dark text-white">
-    <div class="navbar">
-        <button class="btn btn-primary" (click)="previousDay()"><i class="pi pi-caret-left"></i></button>
-        <div>
-            <h4>{{daysStandingsData ? '' : 'loading'}} standings for {{standingsDate | dayOfWeek | titlecase}}, {{standingsDate}}</h4>
-        </div>
-        <div>
-            <button 
-            class="btn btn-primary mx-1" 
-            (click)="reload()"
-            pTooltip="{{lastDataLoadTime?.toLocaleString()}}">
-                <i class="pi pi-refresh"></i>
-            </button>
-            <button 
-            class="btn btn-primary mx-1" 
-            (click)="nextDay()">
-                <i class="pi pi-caret-right"></i>
-            </button>
-        </div>
-    </div>
+    class="px-3 mx-auto w-full max-w-screen-xl bg-black text-white flex align-middle justify-between py-2">
+      <button class="btn btn-primary" (click)="previousDay()"><i class="pi pi-caret-left"></i></button>
+      <div>
+          <h4>{{daysStandingsData ? '' : 'loading'}} standings for {{standingsDate | dayOfWeek | titlecase}}, {{standingsDate}}</h4>
+      </div>
+      <div>
+          <button 
+          class="btn btn-primary mx-1" 
+          (click)="reload()"
+          pTooltip="{{lastDataLoadTime?.toLocaleString()}}">
+              <i class="pi pi-refresh"></i>
+          </button>
+          <button 
+          class="btn btn-primary mx-1" 
+          (click)="nextDay()">
+              <i class="pi pi-caret-right"></i>
+          </button>
+      </div>
 </div>
 
 <div class="container" *ngIf="daysStandingsData">

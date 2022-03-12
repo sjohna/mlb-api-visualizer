@@ -8,7 +8,7 @@ import { Live } from 'src/app/types/live';
 @Component({
   selector: 'app-days-games-game',
   templateUrl: './days-games-game.component.html',
-  styleUrls: ['./days-games-game.component.css']
+  styleUrls: []
 })
 export class DaysGamesGamesComponent implements OnInit {
 

@@ -8,7 +8,7 @@ import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepi
 @Component({
   selector: 'app-days-games',
   templateUrl: './days-games.component.html',
-  styleUrls: ['./days-games.component.css']
+  styleUrls: []
 })
 export class DaysGamesComponent implements OnInit {
   @ViewChild('picker') gamesDatePicker: MatDatepicker<Date> | undefined;

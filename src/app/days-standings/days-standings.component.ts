@@ -5,7 +5,7 @@ import { MlbApiDataService } from '../services/mlb-api-data.service';
 @Component({
   selector: 'app-days-standings',
   templateUrl: './days-standings.component.html',
-  styleUrls: ['./days-standings.component.css']
+  styleUrls: []
 })
 export class DaysStandingsComponent implements OnInit {
 
