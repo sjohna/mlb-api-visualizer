@@ -1,24 +1,24 @@
 <div 
     class="px-3 mx-auto w-full max-w-screen-xl bg-black text-white flex align-middle justify-between py-2">
-    <button class="btn btn-primary" (click)="previousDay()"><i class="pi pi-caret-left"></i></button>
+    <button class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600" (click)="previousDay()"><i class="pi pi-caret-left"></i></button>
     <div>
         <h4>{{dataServiceInitialized ? (daysGamesData ? daysGamesData?.games.length : 'no') : 'loading'}} games for {{gamesDate | dayOfWeek | titlecase}}, {{gamesDate}}</h4>
     </div>
     <div>
         <button 
-        class="btn btn-primary mx-1" 
+        class="bg-blue-500 text-white mx-1 p-2 rounded-md hover:bg-blue-600"
         (click)="selectDate()"
         pTooltip="Select Date">
             <i class="pi pi-calendar"></i>
         </button>
         <button 
-        class="btn btn-primary mx-1" 
+        class="bg-blue-500 text-white mx-1 p-2 rounded-md hover:bg-blue-600" 
         (click)="reload()"
         pTooltip="{{lastDataLoadTime?.toLocaleString()}}">
             <i class="pi pi-refresh"></i>
         </button>
         <button 
-        class="btn btn-primary mx-1" 
+        class="bg-blue-500 text-white mx-1 p-2 rounded-md hover:bg-blue-600" 
         (click)="nextDay()">
             <i class="pi pi-caret-right"></i>
         </button>
