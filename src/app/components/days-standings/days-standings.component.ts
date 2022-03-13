@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDate, LocalDateTime } from '@js-joda/core';
-import { MlbApiDataService } from '../services/mlb-api-data.service';
+import { MlbApiDataService } from '../../services/mlb-api-data.service';
 
 @Component({
   selector: 'app-days-standings',

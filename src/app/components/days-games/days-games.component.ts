@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { MlbApiDataService } from '../services/mlb-api-data.service';
+import { MlbApiDataService } from '../../services/mlb-api-data.service';
 
 import { LocalDate, LocalDateTime, nativeJs } from '@js-joda/core';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';

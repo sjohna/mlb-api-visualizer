@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MlbApiDataServiceEvent } from '../services/mlb-api-data-service-event';
-import { MlbApiDataService } from '../services/mlb-api-data.service';
+import { MlbApiDataServiceEvent } from '../../services/mlb-api-data-service-event';
+import { MlbApiDataService } from '../../services/mlb-api-data.service';
 import {
   trigger,
   style,

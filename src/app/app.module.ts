@@ -4,13 +4,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { DaysGamesComponent } from './days-games/days-games.component';
-import { DaysGamesGamesComponent } from './days-games/days-games-game/days-games-game.component';
-import { ServiceApiEventListComponent } from './service-api-event-list/service-api-event-list.component';
+import { DaysGamesComponent } from './components/days-games/days-games.component';
+import { DaysGamesGamesComponent } from './components/days-games/days-games-game/days-games-game.component';
+import { ServiceApiEventListComponent } from './components/service-api-event-list/service-api-event-list.component';
 
 import { TooltipModule } from 'primeng/tooltip';
 import { DayOfWeekPipe } from './pipes/day-of-week.pipe';
-import { DaysStandingsComponent } from './days-standings/days-standings.component';
+import { DaysStandingsComponent } from './components/days-standings/days-standings.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
